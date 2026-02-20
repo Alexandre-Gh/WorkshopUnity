@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -11,16 +12,35 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private BoxCollider2D _hitbox;
 
     [SerializeField] private LayerMask _wallLayer;
+    [SerializeField] private LayerMask _enemyLayer;
 
     [SerializeField] private GameObject _cameraObject;
+
+    [SerializeField] private Animator _animatorController;
+
+    [SerializeField] private Vector3 _initialPosition = Vector3.zero;
 
     // Start is called before the first frame update
     void Start()
     {
         _rb = gameObject.GetComponent<Rigidbody2D>();
         _hitbox = gameObject.GetComponent<BoxCollider2D>();
+        _animatorController = gameObject.GetComponent<Animator>();
 
-        gameObject.transform.position = new Vector3(3, 0, 0);
+        gameObject.transform.position = _initialPosition;
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == _enemyLayer)
+        {
+            gameObject.transform.position = _initialPosition;
+        }
+    }
+
+    public void Respawn()
+    {
+        gameObject.transform.position = _initialPosition;
     }
 
     // Update is called once per frame
@@ -28,6 +48,9 @@ public class PlayerMovement : MonoBehaviour
     {
         HandleCamera();
         HandleDirection();
+
+        _animatorController.SetFloat("VelocityX", Mathf.Abs(_rb.velocity.x));
+        _animatorController.SetFloat("VelocityY", Mathf.Abs(_rb.velocity.y));
     }
 
     void HandleDirection()
