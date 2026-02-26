@@ -32,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == _enemyLayer)
+        if (collision.gameObject.GetComponent<EnemyBehavior>() != null)
         {
             _rb.position = _initialPosition;
         }
