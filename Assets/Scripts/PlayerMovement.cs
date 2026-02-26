@@ -34,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.gameObject.layer == _enemyLayer)
         {
-            gameObject.transform.position = _initialPosition;
+            _rb.position = _initialPosition;
         }
     }
 
