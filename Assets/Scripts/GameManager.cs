@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     // private Coroutine _loadSceneCoroutine;
 
     [SerializeField] private GameObject _loadingScreenObject;
+    [SerializeField] private Animator _loadingScreenAnimator;
 
     // Start is called before the first frame update
     void Start()
@@ -22,6 +23,8 @@ public class GameManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        _loadingScreenAnimator = _loadingScreenObject.GetComponent<Animator>();
     }
 
     public void LoadScene(SceneAsset scene)
@@ -32,7 +35,11 @@ public class GameManager : MonoBehaviour
 
     IEnumerator LoadSceneCoroutine(SceneAsset scene)
     {
-        _loadingScreenObject.SetActive(true);
+        // _loadingScreenObject.SetActive(true);
+        _loadingScreenAnimator.SetTrigger("Start");
+
+        yield return new WaitForSeconds(2f);
+
         AsyncOperation progress = SceneManager.LoadSceneAsync(scene.name, LoadSceneMode.Single);
 
         while (!progress.isDone)
@@ -40,8 +47,9 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
-        _loadingScreenObject.SetActive(false);
-        yield return null;
+        // _loadingScreenObject.SetActive(false);
+        // yield return null;
+        _loadingScreenAnimator.SetTrigger("End");
     }
 
 

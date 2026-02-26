@@ -8,6 +8,11 @@ public class MainMenuLogic : MonoBehaviour
 {
     [SerializeField] private SceneAsset _gameScene;
 
+    void Start()
+    {
+        
+    }
+
     public void Play()
     {
         GameManager.Instance.LoadScene(_gameScene);
