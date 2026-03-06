@@ -15,10 +15,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask _enemyLayer;
 
     [SerializeField] private GameObject _cameraObject;
+    private CameraShake _cameraShakeScript;
 
     [SerializeField] private Animator _animatorController;
 
     [SerializeField] private Vector3 _initialPosition = Vector3.zero;
+
+    [SerializeField] private AudioSource _hurtSoundSource;
+    [SerializeField] private AudioSource _jumpSoundSource;
 
     // Start is called before the first frame update
     void Start()
@@ -28,12 +32,25 @@ public class PlayerMovement : MonoBehaviour
         _animatorController = gameObject.GetComponent<Animator>();
 
         gameObject.transform.position = _initialPosition;
+
+        if (_cameraObject != null)
+        {
+            _cameraShakeScript = _cameraObject.GetComponent<CameraShake>();
+        }
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.GetComponent<EnemyBehavior>() != null)
         {
+            if (_hurtSoundSource != null)
+            {
+                _hurtSoundSource.Play();
+            }
+            if (_cameraShakeScript != null)
+            {
+                _cameraShakeScript.Shake(1f, 0.35f, 1f);
+            }
             _rb.position = _initialPosition;
         }
     }
@@ -46,7 +63,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        HandleCamera();
+        // HandleCamera();
         HandleDirection();
 
         _animatorController.SetFloat("VelocityX", Mathf.Abs(_rb.velocity.x));
@@ -98,6 +115,10 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKey(KeyCode.UpArrow) && CanJump())
         {
+            if (_jumpSoundSource != null)
+            {
+                _jumpSoundSource.Play();
+            }
             nextVelocity.y = _jumpSpeed;
         } else
         {
