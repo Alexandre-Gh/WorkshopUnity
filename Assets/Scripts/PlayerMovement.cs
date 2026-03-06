@@ -8,12 +8,16 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _speed = 200;
     [SerializeField] private float _jumpSpeed = 5;
 
+    [Header("Component")]
     [SerializeField] private Rigidbody2D _rb;
     [SerializeField] private BoxCollider2D _hitbox;
 
+    [Header("Layers")]
     [SerializeField] private LayerMask _wallLayer;
     [SerializeField] private LayerMask _enemyLayer;
 
+
+    [Header("Other")]
     [SerializeField] private GameObject _cameraObject;
     private CameraShake _cameraShakeScript;
 

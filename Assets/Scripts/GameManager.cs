@@ -27,20 +27,20 @@ public class GameManager : MonoBehaviour
         _loadingScreenAnimator = _loadingScreenObject.GetComponent<Animator>();
     }
 
-    public void LoadScene(SceneAsset scene)
+    public void LoadScene(string scene)
     {
         StartCoroutine(LoadSceneCoroutine(scene));
         // SceneManager.LoadScene(scene.name);
     }
 
-    IEnumerator LoadSceneCoroutine(SceneAsset scene)
+    IEnumerator LoadSceneCoroutine(string scene)
     {
         // _loadingScreenObject.SetActive(true);
         _loadingScreenAnimator.SetTrigger("Start");
 
         yield return new WaitForSeconds(2f);
 
-        AsyncOperation progress = SceneManager.LoadSceneAsync(scene.name, LoadSceneMode.Single);
+        AsyncOperation progress = SceneManager.LoadSceneAsync(scene, LoadSceneMode.Single);
 
         while (!progress.isDone)
         {

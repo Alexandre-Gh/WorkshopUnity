@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class WinZone : MonoBehaviour
 {
-    [SerializeField] private SceneAsset _mainMenuScene;
+    [SerializeField] private string _mainMenuScene;
     [SerializeField] private GameObject _winCanvas;
 
     // Start is called before the first frame update
